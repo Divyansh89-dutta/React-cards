@@ -5,20 +5,31 @@ function Form({ addUser }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addUser(formData);
+    const trimmedData = {
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      image: formData.image.trim(),
+    };
+
+    if (!trimmedData.name || !trimmedData.email || !trimmedData.image) {
+      alert('All fields are required!');
+      return;
+    }
+
+    addUser(trimmedData);
     setFormData({ name: '', email: '', image: '' });
   };
 
   return (
-    <div className="mt-10 flex gap-10 justify-center">
-      <form className="flex gap-5" onSubmit={handleSubmit}>
+    <div className="mt-10 flex justify-center">
+      <form className="flex gap-4 items-center" onSubmit={handleSubmit}>
         <input
-          className="rounded-md px-2 py-1 text-base font-semibold outline-none"
+          className="rounded-md px-3 py-2 text-base font-semibold outline-none border border-gray-300 focus:ring-2 focus:ring-sky-400"
           type="text"
           placeholder="Name"
           name="name"
@@ -26,7 +37,7 @@ function Form({ addUser }) {
           onChange={handleChange}
         />
         <input
-          className="rounded-md px-2 py-1 text-base font-semibold outline-none"
+          className="rounded-md px-3 py-2 text-base font-semibold outline-none border border-gray-300 focus:ring-2 focus:ring-sky-400"
           type="email"
           placeholder="Email"
           name="email"
@@ -34,7 +45,7 @@ function Form({ addUser }) {
           onChange={handleChange}
         />
         <input
-          className="rounded-md px-2 py-1 text-base font-semibold outline-none"
+          className="rounded-md px-3 py-2 text-base font-semibold outline-none border border-gray-300 focus:ring-2 focus:ring-sky-400"
           type="text"
           placeholder="Image URL"
           name="image"
@@ -42,7 +53,7 @@ function Form({ addUser }) {
           onChange={handleChange}
         />
         <button
-          className="px-2 py-1 rounded-md bg-sky-400 text-sm font-semibold"
+          className="px-4 py-2 rounded-md bg-sky-400 text-white font-semibold hover:bg-sky-500 transition"
           type="submit"
         >
           Submit
@@ -51,5 +62,7 @@ function Form({ addUser }) {
     </div>
   );
 }
+
+
 
 export default Form;

@@ -1,23 +1,30 @@
 import React, { useState } from 'react';
-import Cards from './components/Cards';
 import Form from './components/Form';
 
 function App() {
-  const [users, setUsers] = useState([{ name: 'Divyansh', email: 'divyansh@gmail.com', image: '' }]);
+  const [users, setUsers] = useState([]);
 
   const addUser = (user) => {
     setUsers([...users, user]);
   };
 
-  const removeUser = (index) => {
-    setUsers(users.filter((_, i) => i !== index));
-  };
-
   return (
-    <div className="w-full h-screen bg-zinc-200 flex justify-center items-center">
-      <div className="container mx-auto">
-        <Cards users={users} removeUser={removeUser} />
-        <Form addUser={addUser} />
+    <div className="flex flex-col items-center mt-10">
+      <Form addUser={addUser} />
+
+      {/* User Cards */}
+      <div className="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {users.map((user, index) => (
+          <div key={index} className="p-4 bg-white shadow-lg rounded-lg">
+            <img
+              src={user.image}
+              alt={user.name}
+              className="w-24 h-24 rounded-full mx-auto object-cover"
+            />
+            <h2 className="text-lg font-semibold text-center mt-2">{user.name}</h2>
+            <p className="text-center text-gray-500">{user.email}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
